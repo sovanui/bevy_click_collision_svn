@@ -1,5 +1,5 @@
 [package]
-name = "bevy_click_position_svn"
+name = "bevy_click_collision_svn"
 version = "0.1.0"
 edition = "2021"
 

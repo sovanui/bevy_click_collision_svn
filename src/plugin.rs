@@ -1,11 +1,12 @@
 use bevy::{prelude::*, window::PrimaryWindow};
-use bevy_rapier3d::prelude::{QueryFilter, RapierContext};
+use bevy_rapier3d::prelude::{QueryFilter, RapierContext, Real};
 
 pub struct ClickCollisionPlugin;
 
 impl Plugin for ClickCollisionPlugin {
     fn build(&self, app: &mut App) {
-        todo!()
+        app.add_systems(Update, monitor_click_collisions)
+            .add_event::<ClickCollisionEvent>();
     }
 }
 

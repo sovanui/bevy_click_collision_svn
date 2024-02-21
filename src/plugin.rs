@@ -20,7 +20,7 @@ fn monitor_click_collisions(
     camera: Query<(&Camera, &GlobalTransform)>,
     window: Query<&Window, With<PrimaryWindow>>,
     rapier_context: Res<RapierContext>,
-    mouse_button: Res<Input<MouseButton>>,
+    mouse_button: Res<ButtonInput<MouseButton>>,
 
     mut click_collision_event_writer: EventWriter<ClickCollisionEvent>,
 ) {
@@ -35,7 +35,7 @@ fn monitor_click_collisions(
 
             if let Some((entity, toi)) = rapier_context.cast_ray(
                 ray.origin,
-                ray.direction,
+                *ray.direction,
                 Real::MAX,
                 true,
                 QueryFilter::default(),

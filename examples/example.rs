@@ -1,5 +1,3 @@
-use std::f32::consts::PI;
-
 use bevy::prelude::*;
 use bevy_click_collision_svn::plugin::{ClickCollisionEvent, ClickCollisionPlugin};
 use bevy_rapier3d::prelude::{Collider, NoUserData, RapierPhysicsPlugin, Sensor};
@@ -33,11 +31,8 @@ fn setup_clickable_object(
 
     commands.spawn(ClickableObject {
         pbr_bundle: PbrBundle {
-            mesh: meshes.add(Mesh::from(shape::Plane {
-                size: plane_size,
-                subdivisions: 0,
-            })),
-            material: materials.add(Color::rgb(0.3, 0.5, 0.3).into()),
+            mesh: meshes.add(Plane3d::default().mesh().size(plane_size, plane_size)),
+            material: materials.add(Color::rgb(0.3, 0.5, 0.3)),
             ..default()
         },
         collider: Collider::cuboid(click_collider_size, 0., click_collider_size),
@@ -57,22 +52,14 @@ fn setup_clickable_object(
     });
 
     // Add global light
-    commands.spawn(DirectionalLightBundle {
-        directional_light: DirectionalLight {
-            illuminance: 10000.0,
-            ..default()
-        },
-        transform: Transform {
-            translation: Vec3::new(0.0, 2.0, 0.0),
-            rotation: Quat::from_rotation_x(-PI / 4.),
-            ..default()
-        },
-        ..default()
+    commands.insert_resource(AmbientLight {
+        color: Default::default(),
+        brightness: 1000.0,
     });
 }
 
 fn handle_click_collision_event(mut click_collision_event: EventReader<ClickCollisionEvent>) {
-    for event in click_collision_event.iter() {
+    for event in click_collision_event.read() {
         println!("{:?}", event.position);
     }
 }

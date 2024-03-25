@@ -1,3 +1,4 @@
+use bevy::math::bounding::Bounded3d;
 use bevy::prelude::*;
 use bevy_click_collision_svn::plugin::{ClickCollisionEvent, ClickCollisionPlugin};
 use bevy_rapier3d::prelude::{Collider, NoUserData, RapierPhysicsPlugin, Sensor};
@@ -31,7 +32,8 @@ fn setup_clickable_object(
 
     commands.spawn(ClickableObject {
         pbr_bundle: PbrBundle {
-            mesh: meshes.add(Plane3d::default().mesh().size(plane_size, plane_size)),
+            mesh: meshes.add(Plane3d::default().mesh().size(plane_size, plane_size)
+            ),
             material: materials.add(Color::rgb(0.3, 0.5, 0.3)),
             ..default()
         },

@@ -1,4 +1,5 @@
 use bevy::{prelude::*, window::PrimaryWindow};
+use bevy::math::bounding::RayCast3d;
 use bevy_rapier3d::prelude::{QueryFilter, RapierContext, Real};
 
 pub struct ClickCollisionPlugin;
@@ -45,6 +46,30 @@ fn monitor_click_collisions(
                     entity,
                 });
             }
+        }
+    }
+}
+
+fn monitor_click_collisions2(
+    camera: Query<(&Camera, &GlobalTransform)>,
+    window: Query<&Window, With<PrimaryWindow>>,
+    mouse_button: Res<ButtonInput<MouseButton>>,
+    mut click_collision_event_writer: EventWriter<ClickCollisionEvent>
+) {
+    if mouse_button.just_pressed(MouseButton::Right) {
+        let (camera, camera_global_transform) = camera.single();
+        let window = window.single();
+
+        if let Some(cursor_position) = window.cursor_position() {
+            let ray = camera
+                .viewport_to_world(camera_global_transform, cursor_position)
+                .unwrap();
+
+            let ray_cast = RayCast3d::from_ray(ray, 300.);
+
+
+
+
         }
     }
 }

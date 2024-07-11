@@ -32,7 +32,7 @@ fn setup_clickable_object(
     commands.spawn(ClickableObject {
         pbr_bundle: PbrBundle {
             mesh: meshes.add(Plane3d::default().mesh().size(plane_size, plane_size)),
-            material: materials.add(Color::rgb(0.3, 0.5, 0.3)),
+            material: materials.add(Color::srgb(0.3, 0.5, 0.3)),
             ..default()
         },
         collider: Collider::cuboid(click_collider_size, 0., click_collider_size),

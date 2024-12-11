@@ -19,7 +19,7 @@ pub struct ClickCollisionEvent {
 fn monitor_click_collisions(
     camera: Query<(&Camera, &GlobalTransform)>,
     window: Query<&Window, With<PrimaryWindow>>,
-    rapier_context: Res<RapierContext>,
+    rapier_context: Query<&RapierContext>,
     mouse_button: Res<ButtonInput<MouseButton>>,
 
     mut click_collision_event_writer: EventWriter<ClickCollisionEvent>,
@@ -33,7 +33,7 @@ fn monitor_click_collisions(
                 .viewport_to_world(camera_global_transform, cursor_position)
                 .unwrap();
 
-            if let Some((entity, toi)) = rapier_context.cast_ray(
+            if let Some((entity, toi)) = rapier_context.single().cast_ray(
                 ray.origin,
                 *ray.direction,
                 Real::MAX,

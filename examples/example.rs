@@ -14,12 +14,16 @@ fn main() {
         .run();
 }
 
-#[derive(Bundle)]
-pub struct ClickableObject {
-    pbr_bundle: PbrBundle,
-    collider: Collider,
-    sensor: Sensor,
-}
+// #[derive(Bundle)]
+// pub struct ClickableObject {
+//     pbr_bundle: PbrBundle,
+//     collider: Collider,
+//     sensor: Sensor,
+// }
+
+#[derive(Component)]
+#[require(Collider, Sensor)]
+pub struct ClickableObject;
 
 fn setup_clickable_object(
     mut commands: Commands,
@@ -29,15 +33,12 @@ fn setup_clickable_object(
     let plane_size = 20.0;
     let click_collider_size = plane_size / 2.0;
 
-    commands.spawn(ClickableObject {
-        pbr_bundle: PbrBundle {
-            mesh: meshes.add(Plane3d::default().mesh().size(plane_size, plane_size)),
-            material: materials.add(Color::srgb(0.3, 0.5, 0.3)),
-            ..default()
-        },
-        collider: Collider::cuboid(click_collider_size, 0., click_collider_size),
-        sensor: Sensor,
-    });
+    commands.spawn((
+        ClickableObject,
+        Mesh3d(meshes.add(Plane3d::default().mesh().size(plane_size, plane_size))),
+        MeshMaterial3d(materials.add(Color::srgb(0.3, 0.5, 0.3))),
+        Collider::cuboid(click_collider_size, 0., click_collider_size),
+    ));
 
     // Add Camera and light
 
@@ -45,11 +46,11 @@ fn setup_clickable_object(
     let player_camera_z_offset: f32 = 10.0;
 
     // Spawn Camera
-    commands.spawn(Camera3dBundle {
-        transform: Transform::from_xyz(0.0, player_camera_y_offset, player_camera_z_offset)
+    commands.spawn((
+        Camera3d::default(),
+        Transform::from_xyz(0.0, player_camera_y_offset, player_camera_z_offset)
             .looking_at(Vec3::ZERO, Vec3::Y),
-        ..default()
-    });
+    ));
 
     // Add global light
     commands.insert_resource(AmbientLight {

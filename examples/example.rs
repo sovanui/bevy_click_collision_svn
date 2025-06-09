@@ -56,6 +56,7 @@ fn setup_clickable_object(
     commands.insert_resource(AmbientLight {
         color: Default::default(),
         brightness: 1000.0,
+        ..Default::default()
     });
 }
 
